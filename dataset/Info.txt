@@ -1,0 +1,15 @@
+- Original images are in "images" folder.
+- Segmentation masks with the same name as the original image are in "masks" images.
+- If more masks are present on the image, each has a unique color in order to instance each of them (max 3 masks per image):
+   - Mask 1: #ffffff
+   - Mask 2: #fdeded
+   - Mask 3: #fcdbdb
+
+- Images collected from Pexels & Unsplash platforms and were published under CC0 license.
+
+- Dataset is published under CC BY 4.0 licence.
+
+CREDIT
+- Created by Nikola Peric
+- Email: nykola.986@gmail.com
+- Upwork: https://www.upwork.com/o/profiles/users/~015d923157911d8207/

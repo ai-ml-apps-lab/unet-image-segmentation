@@ -5,21 +5,21 @@ from torch.utils.data import DataLoader
 from torch.optim import Adam
 
 from dataset import SegmentationDataset
-from model import UNet
+from unet import UNet
 
 
 # ------------------------
 # Settings
 # ------------------------
 
-IMAGE_DIR = "./dataset/images"
-MASK_DIR = "./dataset/masks"
+IMAGE_DIR = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\images"
+MASK_DIR = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\masks"
 
 MODEL_PATH = "./unet_model.pth"
 
-BATCH_SIZE = 4
-EPOCHS = 10
-LEARNING_RATE = 1e-3
+BATCH_SIZE = 2
+EPOCHS = 20
+LEARNING_RATE = 1e-4
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 

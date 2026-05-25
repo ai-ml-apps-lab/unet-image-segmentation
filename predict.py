@@ -11,7 +11,7 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 MODEL_PATH = "./unet_model.pth"
 
-IMAGE_PATH = "./test_image.png"
+IMAGE_PATH = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\images\coronavirus-4947340_1920.jpg"
 
 
 # ------------------------

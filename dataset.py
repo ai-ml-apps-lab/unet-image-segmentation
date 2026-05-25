@@ -32,7 +32,12 @@ class SegmentationDataset(Dataset):
         image_name = self.images[index]
 
         image_path = os.path.join(self.image_dir, image_name)
-        mask_path = os.path.join(self.mask_dir, image_name)
+        # mask_path = os.path.join(self.mask_dir, image_name)
+        base_name = os.path.splitext(image_name)[0]
+
+        mask_name = base_name + ".png"
+
+        mask_path = os.path.join(self.mask_dir, mask_name)
 
         image = Image.open(image_path).convert("RGB")
         mask = Image.open(mask_path).convert("L")
