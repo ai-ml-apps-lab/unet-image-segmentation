@@ -1,85 +1,118 @@
 import torch
+import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
-
 from PIL import Image
 from torchvision import transforms
-
 from unet import UNet
 
 
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+if __name__ == "__main__":
 
-MODEL_PATH = "./unet_model.pth"
+    # mode = "binary"
+    mode = "multiclass"
 
-IMAGE_PATH = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\images\coronavirus-4947340_1920.jpg"
+    DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+    MODEL_PATH = "./unet_model.pth"
 
-
-# ------------------------
-# Load Model
-# ------------------------
-
-model = UNet().to(DEVICE)
-
-model.load_state_dict(
-    torch.load(MODEL_PATH, map_location=DEVICE)
-)
-
-model.eval()
-
-
-# ------------------------
-# Image Transform
-# ------------------------
-
-transform = transforms.Compose([
-    transforms.Resize((256, 256)),
-    transforms.ToTensor()
-])
+    if mode == 'binary':
+        out_channels = 1
+        class_dict_path = None
+        IMAGE_PATH = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\binary_dataset\images\coronavirus-4947340_1920.jpg"
+    
+    elif mode == 'multiclass':
+        out_channels = 32
+        class_dict_path = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\multiclass_dataset\class_dict.csv"
+        IMAGE_PATH = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\multiclass_dataset\images\0001TP_009210.png"
 
 
-# ------------------------
-# Load Image
-# ------------------------
+        class_dict = pd.read_csv(class_dict_path)
 
-image = Image.open(IMAGE_PATH).convert("RGB")
+        id_to_color = {}
 
-input_image = transform(image)
+        for idx, row in class_dict.iterrows():
+            id_to_color[idx] = (row["r"], row["g"], row["b"])
 
-input_image = input_image.unsqueeze(0).to(DEVICE)
+    # ------------------------
+    # Load Model
+    # ------------------------
+
+    model = UNet(out_channels=out_channels).to(DEVICE)
+
+    model.load_state_dict(
+        torch.load(MODEL_PATH, map_location=DEVICE)
+    )
+
+    model.eval()
 
 
-# ------------------------
-# Prediction
-# ------------------------
+    # ------------------------
+    # Image Transform
+    # ------------------------
 
-with torch.no_grad():
+    transform = transforms.Compose([
+        transforms.Resize((256, 256)),
+        transforms.ToTensor()
+    ])
 
-    output = model(input_image)
 
-    output = torch.sigmoid(output)
-    output = (output > 0.5).float()
+    # ------------------------
+    # Load Image
+    # ------------------------
 
-    # output = torch.softmax(output, dim=1)
-    # output = torch.argmax(output, dim=1)
+    image = Image.open(IMAGE_PATH).convert("RGB")
 
-# ------------------------
-# Visualization
-# ------------------------
+    input_image = transform(image)
 
-pred_mask = output.squeeze().cpu().numpy()
+    input_image = input_image.unsqueeze(0).to(DEVICE)
 
-original = input_image.squeeze().cpu().permute(1, 2, 0).numpy()
 
-plt.figure(figsize=(10, 5))
+    # ------------------------
+    # Prediction
+    # ------------------------
 
-plt.subplot(1, 2, 1)
-plt.imshow(original)
-plt.title("Input Image")
+    with torch.no_grad():
 
-plt.subplot(1, 2, 2)
-plt.imshow(pred_mask, cmap="gray")
-# plt.imshow(pred_mask.squeeze(), cmap="jet")
+        output = model(input_image)
 
-plt.title("Predicted Mask")
+        if mode == 'binary':
+            output = torch.sigmoid(output)
+            output = (output > 0.5).float()
 
-plt.show()
+        elif mode == 'multiclass':
+            output = torch.argmax(output, dim=1)
+
+    # ------------------------
+    # Visualization
+    # ------------------------
+
+    pred_mask = output.squeeze().cpu().numpy()
+
+    original = input_image.squeeze().cpu().permute(1, 2, 0).numpy()
+
+    plt.figure(figsize=(10, 5))
+
+    plt.subplot(1, 2, 1)
+    plt.imshow(original)
+    plt.title("Input Image")
+
+    plt.subplot(1, 2, 2)
+    if mode == 'binary':
+        plt.imshow(pred_mask, cmap="gray")
+
+    elif mode == 'multiclass':
+        h, w = pred_mask.shape
+        rgb_mask = np.zeros((h, w, 3), dtype=np.uint8)
+        for class_id, color in id_to_color.items():
+            rgb_mask[pred_mask == class_id] = color
+
+        plt.imshow(rgb_mask) 
+
+        # Training:
+        # RGB color -> class ID
+        # Prediction visualization:
+        # class ID -> RGB color
+    
+    plt.title("Predicted Mask")
+
+    plt.show()

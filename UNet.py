@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 
+# UNet Architecture (batch, filters, height, width)
 
 class ConvBlock(nn.Module):
 
