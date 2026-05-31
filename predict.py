@@ -9,12 +9,12 @@ from unet import UNet
 
 if __name__ == "__main__":
 
-    mode = "binary"
-    # mode = "multiclass"
+    # mode = "binary"
+    mode = "multiclass"
 
     if mode == 'binary':
         class_dict_path = None
-        IMAGE_PATH = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\binary_dataset\images\coronavirus-4947340_1920.jpg"
+        IMAGE_PATH = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\binary_dataset\for_prediction.jpg"
         out_channels = 1
 
     elif mode == 'multiclass':
@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
         output = model(input_image)
 
-        print(output.shape)
+        # print(output.shape)
 
         if mode == 'binary':
             output = torch.sigmoid(output)

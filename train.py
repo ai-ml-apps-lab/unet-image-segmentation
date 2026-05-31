@@ -9,8 +9,8 @@ from unet import UNet
 
 if __name__ == "__main__":
 
-    mode = "binary"
-    # mode = "multiclass"
+    # mode = "binary"
+    mode = "multiclass"
 
     if mode == 'binary':
         class_dict_path = None
@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     # Parameters 
     MODEL_PATH = f"./unet_{mode}.pth"
-    BATCH_SIZE = 2
+    BATCH_SIZE = 2 # for smaller datasets or limited GPU memory
     EPOCHS = 20
     LEARNING_RATE = 1e-4
     train_ratio = 0.8
@@ -114,8 +114,8 @@ if __name__ == "__main__":
 
         avg_val_loss = val_loss / len(val_loader)
 
-        print(predictions.shape)
-        print(masks.shape)
+        # print(predictions.shape)
+        # print(masks.shape)
         print(f"Epoch {epoch+1}/{EPOCHS} | Train Loss: {avg_train_loss:.4f} | Val Loss: {avg_val_loss:.4f}")
 
 
