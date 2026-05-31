@@ -14,15 +14,15 @@ if __name__ == "__main__":
 
     if mode == 'binary':
         class_dict_path = None
-        IMAGE_DIR = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\binary_dataset\images"
-        MASK_DIR = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\binary_dataset\masks"
+        IMAGE_DIR = r"path_to_folder\images"
+        MASK_DIR = r"path_to_folder\masks"
         criterion = nn.BCEWithLogitsLoss()
         out_channels = 1
 
     elif mode == 'multiclass':
-        class_dict_path = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\multiclass_dataset\class_dict.csv"
-        IMAGE_DIR = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\multiclass_dataset\images"
-        MASK_DIR = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\multiclass_dataset\masks"
+        class_dict_path = r"path_to_file\class_dict.csv"
+        IMAGE_DIR = r"path_to_folder\images"
+        MASK_DIR = r"path_to_folder\masks"
         criterion = nn.CrossEntropyLoss()
         class_df = pd.read_csv(class_dict_path)
         out_channels = len(class_df)

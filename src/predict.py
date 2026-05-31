@@ -14,12 +14,12 @@ if __name__ == "__main__":
 
     if mode == 'binary':
         class_dict_path = None
-        IMAGE_PATH = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\binary_dataset\for_prediction.jpg"
+        IMAGE_PATH = r"path_to_file\for_prediction.jpg"
         out_channels = 1
 
     elif mode == 'multiclass':
-        class_dict_path = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\multiclass_dataset\class_dict.csv"
-        IMAGE_PATH = r"E:\AB\ai_ml_apps_lab_github_2026\5U-Net\dataset\multiclass_dataset\for_prediction.png"
+        class_dict_path = r"path_to_file\class_dict.csv"
+        IMAGE_PATH = r"path_to_file\for_prediction.jpg"
         class_df = pd.read_csv(class_dict_path)
         out_channels = len(class_df)
 
