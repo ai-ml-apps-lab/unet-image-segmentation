@@ -61,6 +61,10 @@ README.md
 ```
 
 ---
+## Dataset
+
+Please download an image segmentation dataset from an open-source platform (e.g., Kaggle) and place it in the appropriate dataset directory before training.
+---
 
 ## Installation
 
